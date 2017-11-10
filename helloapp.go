@@ -27,6 +27,10 @@ func main() {
       fmt.Fprint(w, "The counter is: ", count, "\r\n")
     })
 
+    http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request){
+        fmt.Fprint(w, "Status ok!")
+    })
+
     http.ListenAndServe("0.0.0.0:8080", nil)
 
 }
