@@ -1,0 +1,29 @@
+deploy:
+  marathon:
+  when:
+    branch: $$DEFAULT_BRANCH
+  image: 'quintoandar/drone-marathon'
+  server: 'http://internal-master-pod006-production.blackops.quintoandar.com.br:8080'
+  app_config:
+    sandbox/hello
+    uris:
+      - 'http://internal.lb.maintenance.marathon.mesos:10002/docker.tar.gz'
+    cpus: 0.1
+    mem: 128
+    container:
+      type: DOCKER
+      image: fike/helloapp
+    network: BRIDGE
+    portMappings:
+      - containerPort: 8080
+    healthChecks:
+      - protocol: MESOS_HTTP
+        path: /status
+    labels:
+      HAPROXY_0_GROUP: 'internal, external'
+      HAPROXY_0_VHOST: 'helloword.forno.quintoandar.com.br'
+      Environment: 'forno'
+      Owner: 'infra'
+      Business Unit: 'infra'
+      Service: 'helloworld'
+
